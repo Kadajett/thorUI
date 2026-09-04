@@ -34,6 +34,7 @@ test("two surfaces discover each other and preserve separate roles", async ({ pa
 
 test("pointer capture and frame sampling enter the report", async ({ page }) => {
   await page.goto("/?surface=main&session=input-test");
+  await reportJson(page);
   await page.locator("#touch-target").evaluate((target) => {
     target.dispatchEvent(new PointerEvent("pointerdown", {
       bubbles: true,
@@ -76,6 +77,7 @@ test("controller navigation moves focus and activates with A", async ({ page }) 
 test("one action runs the guided suite and saves a receipt", async ({ page }) => {
   test.skip(isDeployed, "The deployed API has a separate fast smoke test");
   await page.goto("/?surface=main&session=suite-test");
+  await reportJson(page);
   await page.locator("#run-suite").click();
   await page.locator("#touch-target").evaluate((target) => {
     target.dispatchEvent(new PointerEvent("pointerdown", {
