@@ -22,6 +22,7 @@ Optimized builds include `version.json`, an asset manifest with SHA-256 hashes, 
 ```sh
 THORUI_CHANNEL=candidate pnpm build
 pnpm exec wrangler deploy
+THORUI_BASE_URL=https://thorui-demo.example.workers.dev pnpm test:deployed
 ```
 
 The application repository deploys the `thorui-demo` Static Assets Worker. The sibling infrastructure repository owns the `thorui.yougotserved.dev` custom-domain binding.
