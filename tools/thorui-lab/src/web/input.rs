@@ -58,7 +58,7 @@ pub async fn capture(report: &SharedReport) {
     }
 }
 
-fn sample_controllers(report: &SharedReport) {
+pub(super) fn sample_controllers(report: &SharedReport) {
     let Some(gamepads) = gamepads() else {
         return;
     };

@@ -9,7 +9,11 @@ pub fn install(report: &SharedReport) -> Result<(), JsValue> {
     let shared = report.clone();
     super::helpers::listen(trigger.as_ref(), "click", move |_| {
         control.set_disabled(true);
-        set_text("suite-status", "1 of 4 · Checking browser capabilities…");
+        super::input::sample_controllers(&shared);
+        set_text(
+            "suite-status",
+            "1 of 4 · For 15 seconds: use every control and touch the pad.",
+        );
         let control = control.clone();
         let shared = shared.clone();
         spawn_local(async move {
@@ -21,18 +25,15 @@ pub fn install(report: &SharedReport) -> Result<(), JsValue> {
 }
 
 async fn run(report: &SharedReport) -> Result<String, JsValue> {
+    super::input::capture(report).await;
+    super::render::refresh(report);
+    set_text("suite-status", "2 of 4 · Checking browser capabilities…");
     super::active::run(report).await;
     set_text(
         "suite-status",
-        "2 of 4 · Measuring this surface for 5 seconds…",
+        "3 of 4 · Measuring this surface for 5 seconds…",
     );
     super::frames::run(report).await?;
-    set_text(
-        "suite-status",
-        "3 of 4 · For 15 seconds: use every control and touch the pad.",
-    );
-    super::input::capture(report).await;
-    super::render::refresh(report);
     set_text("suite-status", "4 of 4 · Saving the report…");
     super::upload::submit(report)
         .await

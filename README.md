@@ -15,7 +15,7 @@ pnpm check
 pnpm dev
 ```
 
-Open the lab with `?surface=main`. “Open companion” starts a same-session peer with `?surface=companion`; both contexts retain their own frame clock and report. The primary guided action runs the browser, frame, controller, and touch capture, then saves the report and returns a receipt. D-pad or stick directions move focus and A activates the focused control.
+Open the lab with `?surface=main`. “Open Chrome peer experiment” starts a same-session peer with `?surface=companion`; Chrome may keep it in a background tab rather than place it on the lower display. The primary guided action runs the controller, touch, browser, and frame capture, then saves the report and returns a receipt. D-pad or stick directions move focus and A activates the focused control.
 
 Optimized builds include `version.json`, an asset manifest with SHA-256 hashes, and raw byte sizes:
 

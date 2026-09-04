@@ -29,7 +29,7 @@ Run this once on the main projection at 120 Hz and once on the companion project
 ## Advanced dual-surface pass
 
 1. Run the permission probes and grant each prompt.
-2. Use **Open companion**. Place it on the companion surface if Chrome does not place it there.
+2. Use **Open Chrome peer experiment**. This may create only a background tab and cannot launch the lower display reliably.
 3. Keep both projections visible and send 32 peer pings in each direction.
 4. Measure a five-second frame run on both surfaces at the same time.
 5. Use the guided test on both projections and keep both receipt IDs.
