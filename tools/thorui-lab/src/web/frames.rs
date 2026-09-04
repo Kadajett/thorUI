@@ -5,7 +5,7 @@ use crate::statistics::summarize;
 use js_sys::{Function, Promise};
 use wasm_bindgen::{JsCast, JsValue, closure::Closure};
 use wasm_bindgen_futures::{JsFuture, spawn_local};
-use web_sys::{HtmlButtonElement, HtmlSelectElement};
+use web_sys::HtmlSelectElement;
 
 const SAMPLE_DURATION_MS: f64 = 5_000.0;
 
@@ -19,10 +19,20 @@ pub fn install(report: &SharedReport) -> Result<(), JsValue> {
         control.set_disabled(true);
         set_text("metric-frame", "Measuring…");
         spawn_local(async move {
-            let result = measure().await;
-            finish(&shared, &control, result);
+            let result = run(&shared).await;
+            control.set_disabled(false);
+            if let Err(error) = result {
+                set_text("metric-frame", &format!("Failed: {error:?}"));
+            }
         });
     })
+}
+
+pub async fn run(report: &SharedReport) -> Result<(), JsValue> {
+    let (samples, expected_hz) = measure().await?;
+    record(report, &samples, expected_hz);
+    super::render::refresh(report);
+    Ok(())
 }
 
 async fn measure() -> Result<(Vec<f64>, u16), JsValue> {
@@ -36,19 +46,6 @@ async fn measure() -> Result<(Vec<f64>, u16), JsValue> {
         previous = current;
     }
     Ok((intervals, expected_hz))
-}
-
-fn finish(
-    report: &SharedReport,
-    control: &HtmlButtonElement,
-    result: Result<(Vec<f64>, u16), JsValue>,
-) {
-    control.set_disabled(false);
-    match result {
-        Ok((samples, expected_hz)) => record(report, &samples, expected_hz),
-        Err(error) => set_text("metric-frame", &format!("Failed: {error:?}")),
-    }
-    super::render::refresh(report);
 }
 
 fn record(report: &SharedReport, samples: &[f64], expected_hz: u16) {

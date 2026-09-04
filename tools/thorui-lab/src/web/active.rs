@@ -30,14 +30,18 @@ fn install_active_probes(report: &SharedReport) -> Result<(), JsValue> {
         let control = control.clone();
         let shared = shared.clone();
         spawn_local(async move {
-            probe_displays(&shared).await;
-            probe_storage(&shared).await;
-            probe_webgpu(&shared).await;
-            probe_audio(&shared).await;
+            run(&shared).await;
             control.set_disabled(false);
-            super::render::refresh(&shared);
         });
     })
+}
+
+pub async fn run(report: &SharedReport) {
+    probe_displays(report).await;
+    probe_storage(report).await;
+    probe_webgpu(report).await;
+    probe_audio(report).await;
+    super::render::refresh(report);
 }
 
 async fn probe_displays(report: &SharedReport) {

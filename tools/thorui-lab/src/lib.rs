@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+pub mod focus;
 pub mod report;
 pub mod statistics;
 

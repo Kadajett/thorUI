@@ -3,6 +3,7 @@
 mod artifact;
 mod command;
 mod quality;
+mod report;
 
 use std::env;
 
@@ -16,12 +17,14 @@ fn main() {
 }
 
 fn run() -> TaskResult {
-    let task = env::args().nth(1).unwrap_or_else(|| "help".to_owned());
+    let mut arguments = env::args().skip(1);
+    let task = arguments.next().unwrap_or_else(|| "help".to_owned());
     match task.as_str() {
         "build" => artifact::build(),
         "check" => quality::check(),
+        "validate-reports" => report::validate(&arguments.collect::<Vec<_>>()),
         "help" | "--help" | "-h" => {
-            println!("usage: cargo run -p xtask -- <build|check>");
+            println!("usage: cargo run -p xtask -- <build|check|validate-reports> [reports...]");
             Ok(())
         }
         unknown => Err(format!("unknown task: {unknown}").into()),

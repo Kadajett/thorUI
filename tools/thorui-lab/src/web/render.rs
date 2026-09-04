@@ -4,7 +4,7 @@ use crate::report::{CapabilityReport, SupportMatrix};
 use js_sys::Array;
 use std::fmt::Write;
 use wasm_bindgen::{JsCast, JsValue};
-use web_sys::{Blob, BlobPropertyBag, HtmlAnchorElement, Url};
+use web_sys::{Blob, BlobPropertyBag, HtmlAnchorElement, HtmlTextAreaElement, Url};
 
 pub fn refresh(shared: &SharedReport) {
     let report = shared.borrow();
@@ -13,6 +13,7 @@ pub fn refresh(shared: &SharedReport) {
     render_controller(&report);
     render_peer(&report);
     render_lifecycle(&report);
+    render_notes(&report);
     let json = serde_json::to_string_pretty(&*report).unwrap_or_else(|error| error.to_string());
     set_text("report-json", &json);
 }
@@ -24,6 +25,21 @@ pub fn install_export(report: &SharedReport) -> Result<(), JsValue> {
         if let Err(error) = export(&shared.borrow()) {
             set_text("summary-copy", &format!("Export failed: {error:?}"));
         }
+    })
+}
+
+pub fn install_notes(report: &SharedReport) -> Result<(), JsValue> {
+    let trigger = button("add-note")?;
+    let input: HtmlTextAreaElement = element("note-input")?.dyn_into()?;
+    let shared = report.clone();
+    super::helpers::listen(trigger.as_ref(), "click", move |_| {
+        let value = input.value().trim().to_owned();
+        if value.is_empty() {
+            return;
+        }
+        shared.borrow_mut().notes.push(value);
+        input.set_value("");
+        refresh(&shared);
     })
 }
 
@@ -176,6 +192,14 @@ fn render_lifecycle(report: &CapabilityReport) {
     set_html("lifecycle-log", &html);
 }
 
+fn render_notes(report: &CapabilityReport) {
+    let mut html = String::new();
+    for note in report.notes.iter().rev() {
+        let _ = write!(html, "<li>{}</li>", escape_html(note));
+    }
+    set_html("notes-log", &html);
+}
+
 fn export(report: &CapabilityReport) -> Result<(), JsValue> {
     let json = serde_json::to_string_pretty(report)
         .map_err(|error| JsValue::from_str(&error.to_string()))?;
@@ -205,4 +229,13 @@ fn title_case(value: &str) -> String {
     chars.next().map_or_else(String::new, |first| {
         first.to_uppercase().chain(chars).collect()
     })
+}
+
+fn escape_html(value: &str) -> String {
+    value
+        .replace('&', "&amp;")
+        .replace('<', "&lt;")
+        .replace('>', "&gt;")
+        .replace('"', "&quot;")
+        .replace('\'', "&#39;")
 }

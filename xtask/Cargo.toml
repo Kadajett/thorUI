@@ -13,6 +13,7 @@ flate2 = "1.1.10"
 serde.workspace = true
 serde_json.workspace = true
 sha2 = "0.10.9"
+thorui-lab = { path = "../tools/thorui-lab" }
 
 [lints.rust]
 unsafe_code = "forbid"

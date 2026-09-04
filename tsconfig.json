@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "exactOptionalPropertyTypes": true,
+    "lib": ["ES2024"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "noUncheckedIndexedAccess": true,
+    "strict": true,
+    "types": ["@cloudflare/workers-types"]
+  },
+  "exclude": ["worker/**/*.test.ts"],
+  "include": ["worker/**/*.ts"]
+}

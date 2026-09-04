@@ -15,7 +15,7 @@ pnpm check
 pnpm dev
 ```
 
-Open the lab with `?surface=main`. “Open companion” starts a same-session peer with `?surface=companion`; both contexts retain their own frame clock and report. Run the permission probes from a direct user action, measure each device refresh setting separately, exercise every controller control during capture, and export both JSON reports.
+Open the lab with `?surface=main`. “Open companion” starts a same-session peer with `?surface=companion`; both contexts retain their own frame clock and report. The primary guided action runs the browser, frame, controller, and touch capture, then saves the report and returns a receipt. D-pad or stick directions move focus and A activates the focused control.
 
 Optimized builds include `version.json`, an asset manifest with SHA-256 hashes, and raw byte sizes:
 
@@ -36,6 +36,7 @@ The application repository deploys the `thorui-demo` Static Assets Worker. The s
 - [Delivery roadmap](./docs/roadmap.md)
 - [Engineering rules](./docs/quality.md)
 - [Demo delivery](./docs/deployment.md)
+- [Thor capture runbook](./docs/hardware-capture.md)
 - [Open product decisions](./docs/open-questions.md)
 - [Platform research](./docs/research/platform-capabilities.md)
 - [Rust UI stack research](./docs/research/rust-ui-stack.md)

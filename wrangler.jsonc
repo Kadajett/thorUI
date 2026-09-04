@@ -1,11 +1,25 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "thorui-demo",
+  "main": "./worker/index.ts",
   "compatibility_date": "2026-09-04",
   "workers_dev": true,
   "preview_urls": true,
   "assets": {
-    "directory": "./dist"
-  }
+    "directory": "./dist",
+    "run_worker_first": ["/api/*"]
+  },
+  "kv_namespaces": [
+    {
+      "binding": "CAPABILITY_REPORTS",
+      "id": "29e3f76283874ffca23362510ccac7fc"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "REPORT_RATE_LIMITER",
+      "namespace_id": "2026090401",
+      "simple": { "limit": 6, "period": 60 }
+    }
+  ]
 }
-

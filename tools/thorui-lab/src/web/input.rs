@@ -44,7 +44,7 @@ fn install_capture(report: &SharedReport) -> Result<(), JsValue> {
     })
 }
 
-async fn capture(report: &SharedReport) {
+pub async fn capture(report: &SharedReport) {
     let Ok(start) = next_frame().await else {
         return;
     };
@@ -71,7 +71,7 @@ fn sample_controllers(report: &SharedReport) {
     }
 }
 
-fn gamepads() -> Option<Array> {
+pub(super) fn gamepads() -> Option<Array> {
     let navigator: JsValue = window().ok()?.navigator().into();
     super::helpers::call0(&navigator, "getGamepads")
         .ok()?

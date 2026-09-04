@@ -24,7 +24,7 @@ This repository owns:
 
 - the reproducible Rust/WASM, JavaScript glue, CSS, and asset build;
 - a pinned Wrangler development dependency and configuration;
-- the `thorui-demo` Worker service and Static Assets upload;
+- the `thorui-demo` Worker service, Static Assets upload, and report storage binding;
 - build metadata, offline behavior, cache policy, and smoke tests;
 - the command used by local development and CI to deploy a candidate.
 
@@ -47,13 +47,15 @@ The infrastructure worktree inspection on 2026-09-04 found unrelated local chang
 
 Use Cloudflare Workers Static Assets for the offline CSR build. Cloudflare now directs new projects toward Workers, and a Worker Custom Domain is the recommended origin for an application with no external server.
 
-The static Worker starts with no Worker script unless response policy proves that one is required. Its configuration needs:
+Static assets bypass the Worker script. Only `/api/*` invokes the script used for capability-report intake. Its configuration needs:
 
 - a current, pinned compatibility date;
 - the built asset directory;
 - single-page-application fallback only if client routes are introduced;
 - no production routes or custom-domain declaration;
 - `workers_dev` retained for bootstrap and diagnostic access if policy permits.
+
+Capability reports use a ThorUI-owned KV namespace. The public API accepts same-origin schema version 1 reports, caps their size, applies an edge rate limit, and expires them after 90 days. It exposes no public list or read route.
 
 The first bootstrap is ordered:
 

@@ -4,15 +4,21 @@
   "packageManager": "pnpm@11.25.0",
   "scripts": {
     "build": "cargo run -p xtask -- build",
-    "check": "cargo run -p xtask -- check && pnpm build && pnpm test:browser",
+    "check": "cargo run -p xtask -- check && pnpm check:worker && pnpm build && pnpm test:browser",
+    "check:worker": "tsc --noEmit && vitest run worker",
     "deploy": "wrangler deploy",
     "dev": "trunk serve --open",
+    "reports:get": "wrangler kv key get --namespace-id=29e3f76283874ffca23362510ccac7fc --remote",
+    "reports:list": "wrangler kv key list --namespace-id=29e3f76283874ffca23362510ccac7fc --remote --prefix=report:",
     "test:browser": "playwright test",
     "test:deployed": "playwright test",
     "types": "wrangler types"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "5.20260904.1",
     "@playwright/test": "1.62.1",
+    "typescript": "7.0.2",
+    "vitest": "5.0.0",
     "wrangler": "4.129.0"
   }
 }
