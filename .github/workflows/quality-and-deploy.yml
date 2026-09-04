@@ -70,11 +70,17 @@ jobs:
         env:
           THORUI_BASE_URL: https://thorui.yougotserved.dev
         run: |
-          revision=$(curl --retry 5 --retry-all-errors --fail --silent --show-error "$THORUI_BASE_URL/version.json" | jq -r .revision)
-          if [[ "$revision" != "${GITHUB_SHA:0:12}" ]]; then
-            echo "Expected ${GITHUB_SHA:0:12}, received $revision"
-            exit 1
-          fi
+          expected=${GITHUB_SHA:0:12}
+          revision=""
+          for attempt in {1..15}; do
+            revision=$(curl --fail --silent --show-error "$THORUI_BASE_URL/version.json" | jq -r .revision || true)
+            if [[ "$revision" == "$expected" ]]; then
+              break
+            fi
+            echo "Waiting for $expected; received $revision (attempt $attempt/15)"
+            sleep 2
+          done
+          [[ "$revision" == "$expected" ]] || exit 1
           pnpm test:deployed
       - name: Restore last green version
         if: failure() && steps.promote.outcome == 'success'
