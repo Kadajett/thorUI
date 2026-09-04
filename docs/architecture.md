@@ -2,7 +2,7 @@
 
 ## Status
 
-This is the planning baseline. A two-Activity Android host is the leading execution topology, but the topology and graphics dependencies remain open until the hardware probe is complete.
+An Android-assisted host with one web projection per display is the accepted Thor execution topology. Graphics dependencies remain open until later hardware probes establish their budgets.
 
 ## Architectural goal
 
@@ -67,7 +67,7 @@ This is the preferred device topology only if both contexts remain active and pl
 
 A small Android host launches one web surface on each Android display and routes messages between them. The web content and framework remain Rust/WASM. Kotlin is limited to display discovery, activity lifecycle, WebView hosting, permissions, and message routing.
 
-This becomes the supported device topology if Chrome cannot reliably launch, keep active, or recover both surfaces. It is not a second product implementation.
+This is the supported Thor topology because the Chrome hardware probe created a background peer but did not place a usable projection on the lower display. It is not a second product implementation. See [ADR 0001](./adr/0001-use-android-assisted-dual-surface-host.md).
 
 ## Planned deep modules
 
