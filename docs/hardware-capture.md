@@ -22,7 +22,7 @@ Do not infer a failed capability from one dismissed permission prompt. Record th
 4. When step 3 appears, use every controller input and touch and drag in the nearby pad.
 5. Stop when the page shows **Saved** and an eight-character receipt.
 
-The report is stored by the deployment for 90 days. Do not copy Android system logs or download JSON for the normal capture. An operator can find the receipt with `pnpm reports:list` and fetch its key with `pnpm reports:get -- KEY`.
+The report is stored by the deployment for 90 days. Do not copy Android system logs or download JSON for the normal capture. An operator can find the receipt with `pnpm reports:list` and fetch its key with `pnpm reports:get KEY`.
 
 Run this once on the main projection at 120 Hz and once on the companion projection at 60 Hz. The advanced pass below records lifecycle and placement facts that cannot be automated safely.
 
