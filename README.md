@@ -25,7 +25,7 @@ pnpm exec wrangler deploy
 THORUI_BASE_URL=https://thorui-demo.example.workers.dev pnpm test:deployed
 ```
 
-The application repository deploys the `thorui-demo` Static Assets Worker. The sibling infrastructure repository owns the `thorui.yougotserved.dev` custom-domain binding.
+The repository deploys the `thorui-demo` Static Assets Worker. Its Android APK is a reference app distributed through this repository's GitHub Releases. Framework users package and publish their own applications and games; ThorUI is not an app store or shared launcher.
 
 ## Project references
 
@@ -52,5 +52,6 @@ The application repository deploys the `thorui-demo` Static Assets Worker. The s
 - One session can drive two surfaces with different sizes and refresh rates.
 - Games and applications share runtime, input, layout tokens, and lifecycle behavior.
 - UI recipes are source-owned and configurable while shared primitives preserve interaction rules.
+- The demo APK proves the reusable Android host; downstream experiences own their package, signing, and distribution.
 - Starting with the first runnable milestone, the latest successful demo will live at [thorui.yougotserved.dev](https://thorui.yougotserved.dev).
 - ThorUI is not a general game engine or a replacement for the browser DOM.

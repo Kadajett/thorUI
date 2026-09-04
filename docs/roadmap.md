@@ -147,11 +147,14 @@ Turn the selected Milestone 1 topology into a supported host.
 
 For Chrome-only, deliver install, launch, pairing, reconnection, offline, fullscreen, and recovery flows. For Android-assisted, keep the host narrow and load the same built web artifacts used elsewhere.
 
+Publish the framework demo APK through GitHub Releases. Make the host reusable so downstream applications and games can provide their own package identity, signing, web artifact, and distribution without forking display policy.
+
 Exit gate:
 
 - One action launches or clearly guides both surfaces into the session.
 - Suspend, resume, display off, peer loss, and experience upgrade recover predictably.
 - Browser and Android paths pass the same protocol and experience contract tests.
+- A downstream example can produce its own signed APK without depending on the ThorUI demo service.
 - Host-specific code contains no experience or design-system policy.
 
 ## Milestone 8: Reference experiences and beta

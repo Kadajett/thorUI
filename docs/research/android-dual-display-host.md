@@ -4,7 +4,9 @@ Research status: 2026-09-04. This note uses first-party Android and Chrome docum
 
 ## Recommendation
 
-Keep `thorui.yougotserved.dev` as the preview, update, and install surface. Ship one narrow Android host that contains two Activities with one WebView each. After installation, a verified Android App Link can enter one launcher Activity; the launcher can enumerate displays and request one surface Activity on each eligible display. This is one installed app and one ThorUI session with two projections, not two launches of the whole product.
+Keep `thorui.yougotserved.dev` as the browser preview and App Link surface. Publish the reference APK through the ThorUI repository's GitHub Releases. Ship one narrow Android host that contains two Activities with one WebView each. After installation, a verified Android App Link can enter one launcher Activity; the launcher can enumerate displays and request one surface Activity on each eligible display. This is one installed app and one ThorUI session with two projections, not two launches of the whole product.
+
+The reference APK is only the framework demo. Applications and games built with ThorUI reuse the host packaging but own their web artifact, Android package, signing key, verified domain if used, and distribution. No shared launcher or ThorUI store is required.
 
 Do not use a Trusted Web Activity as the supported host. A TWA delegates rendering to the user's browser and does not give the host direct access to web state. Its official contract does not promise two independently placed, simultaneously active browser Activities. A custom WebView is an Android `View` owned by the Activity, so it preserves the same Rust/WASM UI while giving the host direct ownership of display placement, lifecycle, and a narrow message bridge.
 
