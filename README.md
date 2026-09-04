@@ -40,6 +40,7 @@ The application repository deploys the `thorui-demo` Static Assets Worker. The s
 - [Thor capture runbook](./docs/hardware-capture.md)
 - [Open product decisions](./docs/open-questions.md)
 - [Platform research](./docs/research/platform-capabilities.md)
+- [Android dual-display host research](./docs/research/android-dual-display-host.md)
 - [First Thor capture](./docs/research/thor-capture-2026-09-04.md)
 - [Rust UI stack research](./docs/research/rust-ui-stack.md)
 
