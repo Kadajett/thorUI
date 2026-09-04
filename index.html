@@ -4,17 +4,74 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
     <meta name="theme-color" content="#090d18" />
-    <meta name="description" content="AYN Thor browser and hardware capability lab" />
+    <meta name="description" content="Lumen Field, a dual-screen ThorUI showcase" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link data-trunk rel="css" href="styles/app.css" />
     <link data-trunk rel="copy-file" href="public/manifest.webmanifest" />
     <link data-trunk rel="copy-file" href="public/icon.svg" />
     <link data-trunk rel="copy-file" href="public/sw.js" />
     <link data-trunk rel="copy-file" href="public/_headers" />
-    <link data-trunk rel="rust" href="tools/thorui-lab/Cargo.toml" data-wasm-opt="z" data-wasm-opt-params="--enable-bulk-memory --enable-bulk-memory-opt" />
-    <title>ThorUI Capability Lab</title>
+    <link data-trunk rel="copy-dir" href="public/.well-known" />
+    <link data-trunk rel="rust" href="tools/thorui-lab/Cargo.toml" data-wasm-opt="z" data-wasm-opt-params="--enable-bulk-memory --enable-bulk-memory-opt --enable-nontrapping-float-to-int" />
+    <title>Lumen Field · ThorUI</title>
   </head>
   <body>
+    <div id="showcase-shell">
+      <canvas id="lumen-canvas" tabindex="0" aria-label="Interactive Lumen Field"></canvas>
+      <header class="demo-header">
+        <a class="demo-brand" href="/" aria-label="Lumen Field home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span><strong>Lumen Field</strong><small>Built with ThorUI</small></span>
+        </a>
+        <div class="demo-status">
+          <span id="active-lumen" class="active-lumen" aria-hidden="true"></span>
+          <span id="demo-peer-status">Solo surface</span>
+          <span class="role-chip"><span id="demo-surface-role">main</span> projection</span>
+        </div>
+      </header>
+
+      <section class="demo-intro">
+        <p class="demo-kicker">Dual-screen light instrument</p>
+        <h1>Draw a living<br /><em>constellation.</em></h1>
+        <p>Move with the stick. Hold A to paint. Press X for color and B to clear.</p>
+      </section>
+
+      <section class="telemetry" aria-label="Field status">
+        <div><small>Marks</small><strong id="stroke-count">0</strong></div>
+        <div><small>Cursor</small><strong id="cursor-position">50 · 50</strong></div>
+        <div><small>Input</small><strong id="input-mode">Waiting</strong></div>
+      </section>
+
+      <section class="lumen-deck" aria-label="Lumen controls">
+        <div class="deck-copy">
+          <p class="demo-kicker">Companion console</p>
+          <h2>Shape the field</h2>
+          <p>Touch the atmosphere or choose a lumen.</p>
+        </div>
+        <div class="color-orbit" aria-label="Lumen palette">
+          <button id="color-mint" class="color-key mint" type="button" aria-label="Mint lumen"></button>
+          <button id="color-cyan" class="color-key cyan" type="button" aria-label="Cyan lumen"></button>
+          <button id="color-violet" class="color-key violet" type="button" aria-label="Violet lumen"></button>
+          <button id="color-coral" class="color-key coral" type="button" aria-label="Coral lumen"></button>
+          <button id="color-gold" class="color-key gold" type="button" aria-label="Gold lumen"></button>
+          <button id="clear-field" class="clear-key" type="button"><span>Clear</span><small>B</small></button>
+        </div>
+      </section>
+
+      <nav class="demo-actions" aria-label="ThorUI showcase actions">
+        <a id="download-apk" class="install-cta" href="https://github.com/Kadajett/thorUI/releases/download/v0.1.0-alpha.1/thorui-demo-v0.1.0-alpha.1.apk">
+          <span>Download for AYN Thor</span><small>Alpha APK · GitHub</small>
+        </a>
+        <a class="quiet-action" href="/?mode=lab&amp;surface=main">Open hardware diagnostics</a>
+        <a class="quiet-action" href="https://github.com/Kadajett/thorUI">View framework source</a>
+      </nav>
+
+      <footer class="demo-help">
+        <span><b>A</b> paint</span><span><b>X</b> color</span><span><b>B</b> clear</span>
+      </footer>
+    </div>
+
+    <div id="lab-shell">
     <header class="topbar">
       <div>
         <p class="eyebrow">ThorUI / Milestone 1</p>
@@ -106,7 +163,8 @@
         <pre id="report-json" tabindex="0">{}</pre>
       </details>
     </main>
+    </div>
 
-    <noscript>This capability lab requires JavaScript and WebAssembly.</noscript>
+    <noscript>ThorUI requires JavaScript and WebAssembly.</noscript>
   </body>
 </html>

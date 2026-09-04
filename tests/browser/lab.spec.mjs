@@ -5,12 +5,54 @@ const profiles = [
   { name: "companion", width: 1240, height: 1080 },
 ];
 const isDeployed = Boolean(process.env.THORUI_BASE_URL);
+const labUrl = (surface, session) => `/?mode=lab&surface=${surface}&session=${session}`;
+
+for (const profile of profiles) {
+  test(`${profile.name} showcase fits its Thor surface`, async ({ page }) => {
+    await page.setViewportSize(profile);
+    await page.goto(`/?surface=${profile.name}&session=showcase-layout`);
+    await expect(page.locator(".demo-brand strong")).toHaveText("Lumen Field");
+    await expect(page.locator("#demo-surface-role")).toHaveText(profile.name);
+    await expect(page.locator("#lumen-canvas")).toBeVisible();
+  });
+}
+
+test("showcase accepts touch and controller paint actions", async ({ page }) => {
+  await installGamepad(page);
+  await page.goto("/?surface=main&session=showcase-input");
+  await expect(page.locator("#stroke-count")).toHaveText("0");
+  await page.locator("#lumen-canvas").click({ position: { x: 500, y: 320 } });
+  await expect(page.locator("#stroke-count")).toHaveText("1");
+  await setGamepadButton(page, 0, true);
+  await expect.poll(async () => Number(await page.locator("#stroke-count").textContent())).toBeGreaterThan(1);
+});
+
+test("showcase actions cross the surface link", async ({ page, context }) => {
+  await page.goto("/?surface=main&session=showcase-peer");
+  const companion = await context.newPage();
+  await companion.goto("/?surface=companion&session=showcase-peer");
+  await expect(page.locator("#demo-peer-status")).toHaveText("Dual surface linked");
+  await page.locator("#lumen-canvas").click({ position: { x: 600, y: 420 } });
+  await expect(companion.locator("#stroke-count")).toHaveText("1");
+});
+
+test("showcase exposes the alpha APK and Android App Link", async ({ page, request }) => {
+  await page.goto("/open");
+  await expect(page.locator("#download-apk")).toBeVisible();
+  await expect(page.locator("#download-apk")).toHaveAttribute(
+    "href",
+    "https://github.com/Kadajett/thorUI/releases/download/v0.1.0-alpha.1/thorui-demo-v0.1.0-alpha.1.apk",
+  );
+  const association = await request.get("/.well-known/assetlinks.json");
+  expect(association.status()).toBe(200);
+  expect((await association.json())[0].target.package_name).toBe("dev.yougotserved.thorui.demo");
+});
 
 for (const profile of profiles) {
   test(`${profile.name} surface boots and exports observations`, async ({ page }) => {
     await page.setViewportSize(profile);
-    await page.goto(`/?surface=${profile.name}&session=browser-test`);
-    await expect(page.locator("h1")).toHaveText("Capability Lab");
+    await page.goto(labUrl(profile.name, "browser-test"));
+    await expect(page.locator("#lab-shell h1")).toHaveText("Capability Lab");
     await expect(page.locator("#surface-role")).toContainText(profile.name);
     await expect(page.locator("#metric-viewport")).toContainText(`${profile.width} × ${profile.height}`);
     const report = await reportJson(page);
@@ -23,9 +65,9 @@ for (const profile of profiles) {
 }
 
 test("two surfaces discover each other and preserve separate roles", async ({ page, context }) => {
-  await page.goto("/?surface=main&session=peer-test");
+  await page.goto(labUrl("main", "peer-test"));
   const companion = await context.newPage();
-  await companion.goto("/?surface=companion&session=peer-test");
+  await companion.goto(labUrl("companion", "peer-test"));
   await expect(companion.locator("#surface-role")).toContainText("companion");
   await expect(page.locator("#connection-badge")).toHaveText("Peer linked");
   await page.locator("#ping-peer").click();
@@ -33,7 +75,7 @@ test("two surfaces discover each other and preserve separate roles", async ({ pa
 });
 
 test("pointer capture and frame sampling enter the report", async ({ page }) => {
-  await page.goto("/?surface=main&session=input-test");
+  await page.goto(labUrl("main", "input-test"));
   await reportJson(page);
   await page.locator("#touch-target").evaluate((target) => {
     target.dispatchEvent(new PointerEvent("pointerdown", {
@@ -58,7 +100,7 @@ test("pointer capture and frame sampling enter the report", async ({ page }) => 
 
 test("controller navigation moves focus and activates with A", async ({ page }) => {
   await installGamepad(page);
-  await page.goto("/?surface=main&session=controller-test");
+  await page.goto(labUrl("main", "controller-test"));
   await setGamepadButton(page, 13, true);
   await expect(page.locator("#run-suite")).toBeFocused();
   await expect(page.locator("#controller-nav-status")).toContainText("Test Controller");
@@ -76,7 +118,7 @@ test("controller navigation moves focus and activates with A", async ({ page }) 
 
 test("one action runs the guided suite and saves a receipt", async ({ page }) => {
   test.skip(isDeployed, "The deployed API has a separate fast smoke test");
-  await page.goto("/?surface=main&session=suite-test");
+  await page.goto(labUrl("main", "suite-test"));
   await reportJson(page);
   await page.locator("#run-suite").click();
   await page.locator("#touch-target").evaluate((target) => {

@@ -4,8 +4,11 @@
   "packageManager": "pnpm@11.25.0",
   "scripts": {
     "build": "cargo run -p xtask -- build",
-    "check": "cargo run -p xtask -- check && pnpm check:worker && pnpm build && pnpm test:browser",
+    "check": "cargo run -p xtask -- check && pnpm check:worker && pnpm build && pnpm test:browser && pnpm check:android",
+    "check:android": "cd hosts/android && ./gradlew lintDebug testDebugUnitTest assembleDebug --warning-mode all",
     "check:worker": "tsc --noEmit && vitest run worker",
+    "android:debug": "pnpm build && cd hosts/android && ./gradlew assembleDebug",
+    "android:release": "pnpm build && cd hosts/android && ./gradlew assembleRelease",
     "deploy": "wrangler deploy",
     "dev": "trunk serve --open",
     "reports:get": "wrangler kv key get --namespace-id=29e3f76283874ffca23362510ccac7fc --remote",

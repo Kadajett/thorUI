@@ -5,6 +5,11 @@
 /.wrangler/
 /playwright-report/
 /test-results/
+/hosts/android/.gradle/
+/hosts/android/build/
+/hosts/android/app/build/
+/hosts/android/local.properties
+*.jks
 /.dev.vars*
 .env*
 !/reports/.gitkeep

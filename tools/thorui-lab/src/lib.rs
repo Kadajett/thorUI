@@ -2,6 +2,7 @@
 
 pub mod focus;
 pub mod report;
+pub mod showcase;
 pub mod statistics;
 
 #[cfg(target_arch = "wasm32")]

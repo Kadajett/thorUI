@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "dev.yougotserved.thorui.demo",
+      "sha256_cert_fingerprints": [
+        "A7:DB:C1:AC:5B:45:17:68:70:2E:E2:7D:58:83:46:25:3E:FA:EA:3F:44:DA:92:C6:78:AB:DA:34:D1:8B:01:A0"
+      ]
+    }
+  }
+]

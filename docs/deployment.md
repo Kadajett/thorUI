@@ -76,6 +76,8 @@ Every deployable build produces:
 - a machine-readable asset manifest for smoke checks;
 - raw and compressed size reports for the performance budget.
 
+Tag builds also produce a signed, R8-optimized Android APK and its SHA-256 checksum. The release key is held in GitHub Actions secrets and backed up outside the repository. The site publishes the certificate fingerprint for verified App Links, never the private key.
+
 Hashed assets may be cached as immutable. The shell, version file, web manifest, and service-worker entry must revalidate so `latest` does not remain stale behind browser or CDN caches.
 
 Service-worker updates are explicit. A running experience is not replaced mid-session; it reports that a newer build is ready and activates it on a safe reload. Saved-state and peer-protocol compatibility are checked before activation.

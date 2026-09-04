@@ -1,7 +1,7 @@
 {
-  "name": "ThorUI Capability Lab",
-  "short_name": "ThorUI Lab",
-  "description": "AYN Thor browser and hardware capability probe",
+  "name": "Lumen Field · ThorUI",
+  "short_name": "Lumen Field",
+  "description": "A dual-screen light instrument built with ThorUI",
   "id": "/",
   "start_url": "/?surface=main",
   "scope": "/",

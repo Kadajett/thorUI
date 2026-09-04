@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Lumen Field</string>
+    <string name="companion_unavailable">Companion display unavailable. Running on one surface.</string>
+</resources>

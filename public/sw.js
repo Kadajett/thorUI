@@ -1,4 +1,4 @@
-const CACHE = "thorui-lab-v1";
+const CACHE = "lumen-field-alpha-1";
 const SHELL = ["/", "/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
@@ -17,4 +17,3 @@ self.addEventListener("fetch", (event) => {
     return response;
   }).catch(() => caches.match(event.request).then((response) => response || caches.match("/"))));
 });
-

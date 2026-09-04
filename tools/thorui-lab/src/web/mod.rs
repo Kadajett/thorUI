@@ -7,6 +7,7 @@ mod lifecycle;
 mod messaging;
 mod navigation;
 mod render;
+mod showcase;
 mod suite;
 mod upload;
 
@@ -24,6 +25,9 @@ pub type SharedReport = Rc<RefCell<CapabilityReport>>;
 #[allow(clippy::missing_errors_doc)]
 pub fn start() -> Result<(), JsValue> {
     let role = query_value("surface").unwrap_or_else(|| "main".to_owned());
+    if query_value("mode").as_deref() != Some("lab") {
+        return showcase::start(role);
+    }
     configure_refresh(&role)?;
     let session = query_value("session").unwrap_or_else(capture_id);
     let report = Rc::new(RefCell::new(CapabilityReport::new(
