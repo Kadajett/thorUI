@@ -65,7 +65,9 @@ jobs:
         if: github.event_name == 'push'
         env:
           THORUI_BASE_URL: https://candidate-thorui-demo.jeremy-ryan-stover.workers.dev
-        run: pnpm test:deployed
+        run: |
+          scripts/wait-for-revision.sh "$THORUI_BASE_URL" "${GITHUB_SHA:0:12}"
+          pnpm test:deployed
       - name: Promote candidate version
         if: github.event_name == 'push'
         id: promote
@@ -78,16 +80,7 @@ jobs:
           THORUI_BASE_URL: https://thorui.yougotserved.dev
         run: |
           expected=${GITHUB_SHA:0:12}
-          revision=""
-          for attempt in {1..15}; do
-            revision=$(curl --fail --silent --show-error "$THORUI_BASE_URL/version.json" | jq -r .revision || true)
-            if [[ "$revision" == "$expected" ]]; then
-              break
-            fi
-            echo "Waiting for $expected; received $revision (attempt $attempt/15)"
-            sleep 2
-          done
-          [[ "$revision" == "$expected" ]] || exit 1
+          scripts/wait-for-revision.sh "$THORUI_BASE_URL" "$expected"
           pnpm test:deployed
       - name: Restore last green version
         if: failure() && steps.promote.outcome == 'success'
