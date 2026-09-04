@@ -1,0 +1,20 @@
+{
+  "name": "ThorUI Capability Lab",
+  "short_name": "ThorUI Lab",
+  "description": "AYN Thor browser and hardware capability probe",
+  "id": "/",
+  "start_url": "/?surface=main",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#090d18",
+  "theme_color": "#090d18",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

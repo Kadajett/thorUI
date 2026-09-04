@@ -1,0 +1,17 @@
+{
+  "name": "thorui",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "build": "cargo run -p xtask -- build",
+    "check": "cargo run -p xtask -- check && pnpm build && pnpm test:browser",
+    "deploy": "wrangler deploy",
+    "dev": "trunk serve --open",
+    "test:browser": "playwright test",
+    "types": "wrangler types"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "wrangler": "4.129.0"
+  }
+}

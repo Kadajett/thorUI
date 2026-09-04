@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="theme-color" content="#090d18" />
+    <meta name="description" content="AYN Thor browser and hardware capability lab" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link data-trunk rel="css" href="styles/app.css" />
+    <link data-trunk rel="copy-file" href="public/manifest.webmanifest" />
+    <link data-trunk rel="copy-file" href="public/icon.svg" />
+    <link data-trunk rel="copy-file" href="public/sw.js" />
+    <link data-trunk rel="copy-file" href="public/_headers" />
+    <link data-trunk rel="rust" href="tools/thorui-lab/Cargo.toml" data-wasm-opt="z" data-wasm-opt-params="--enable-bulk-memory --enable-bulk-memory-opt" />
+    <title>ThorUI Capability Lab</title>
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ThorUI / Milestone 1</p>
+        <h1>Capability Lab</h1>
+      </div>
+      <div class="identity">
+        <span id="connection-badge" class="badge">Starting</span>
+        <span id="surface-role">surface: unknown</span>
+        <span id="build-revision">revision: local</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero panel">
+        <div>
+          <p class="eyebrow">Hardware evidence, not assumptions</p>
+          <h2 id="summary-title">Reading this surface</h2>
+          <p id="summary-copy" class="muted">The report updates as probes finish.</p>
+        </div>
+        <div class="actions" aria-label="Probe actions">
+          <label class="select-field">Expected refresh
+            <select id="expected-refresh"><option value="120">120 Hz</option><option value="60">60 Hz</option></select>
+          </label>
+          <button id="measure-frames" type="button">Measure 5s frame pulse</button>
+          <button id="capture-input" type="button">Capture controller 15s</button>
+          <button id="run-active" type="button">Run permission probes</button>
+          <button id="open-companion" type="button">Open companion</button>
+          <button id="request-fullscreen" type="button">Enter fullscreen</button>
+          <button id="toggle-wake-lock" type="button">Hold wake lock</button>
+          <button id="export-report" type="button">Export report</button>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Current surface metrics">
+        <article class="metric"><span>Viewport</span><strong id="metric-viewport">—</strong></article>
+        <article class="metric"><span>Screen</span><strong id="metric-screen">—</strong></article>
+        <article class="metric"><span>Pixel ratio</span><strong id="metric-density">—</strong></article>
+        <article class="metric"><span>Frame pulse</span><strong id="metric-frame">Not measured</strong></article>
+      </section>
+
+      <section class="columns">
+        <article class="panel">
+          <div class="section-title"><h2>Capabilities</h2><span>passive + active</span></div>
+          <dl id="capability-list" class="capability-list"></dl>
+        </article>
+        <article class="panel">
+          <div class="section-title"><h2>Peer link</h2><span>BroadcastChannel</span></div>
+          <div id="peer-summary" class="empty-state">No peer observed.</div>
+          <button id="ping-peer" type="button" class="secondary">Send 32 pings</button>
+        </article>
+      </section>
+
+      <section class="columns">
+        <article class="panel">
+          <div class="section-title"><h2>Controller</h2><span>Gamepad API</span></div>
+          <div id="controller-summary" class="empty-state">Press a controller button, then capture.</div>
+        </article>
+        <article class="panel">
+          <div class="section-title"><h2>Touch and pointer</h2><span>live samples</span></div>
+          <div id="touch-target" class="touch-target" tabindex="0">Touch, drag, or press here</div>
+          <p id="pointer-summary" class="mono">No pointer samples.</p>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="section-title"><h2>Lifecycle</h2><span>focus, visibility, resize, install</span></div>
+        <ol id="lifecycle-log" class="event-log"></ol>
+      </section>
+
+      <details class="panel report-panel">
+        <summary>Machine-readable report</summary>
+        <pre id="report-json" tabindex="0">{}</pre>
+      </details>
+    </main>
+
+    <noscript>This capability lab requires JavaScript and WebAssembly.</noscript>
+  </body>
+</html>

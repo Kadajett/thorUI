@@ -1,10 +1,32 @@
 # ThorUI
 
-ThorUI is a planned Rust and WebAssembly framework for dual-screen experiences on the AYN Thor. It will provide a shared runtime, controller and touch input, independent surface timing, a native-feeling design system, and Chrome-compatible web surfaces inside a narrow Android display host.
+ThorUI is a Rust and WebAssembly framework project for dual-screen experiences on the AYN Thor. It will provide a shared runtime, controller and touch input, independent surface timing, a native-feeling design system, and Chrome-compatible web surfaces inside a narrow Android display host when hardware evidence requires one.
 
-This repository is currently a planning baseline. No framework code has been selected or scaffolded yet.
+Milestone 1 is a renderer-neutral capability lab. It measures the browser and hardware facts needed to choose the supported execution topology before the framework grows around assumptions.
 
-## Plan
+## Capability lab
+
+Prerequisites are Rust 1.96, the `wasm32-unknown-unknown` target, Trunk 0.21.14, Node 24, and pnpm 11.
+
+```sh
+pnpm install
+cargo install trunk --locked --version 0.21.14
+pnpm check
+pnpm dev
+```
+
+Open the lab with `?surface=main`. “Open companion” starts a same-session peer with `?surface=companion`; both contexts retain their own frame clock and report. Run the permission probes from a direct user action, measure each device refresh setting separately, exercise every controller control during capture, and export both JSON reports.
+
+Optimized builds include `version.json`, an asset manifest with SHA-256 hashes, and raw byte sizes:
+
+```sh
+THORUI_CHANNEL=candidate pnpm build
+pnpm exec wrangler deploy
+```
+
+The application repository deploys the `thorui-demo` Static Assets Worker. The sibling infrastructure repository owns the `thorui.yougotserved.dev` custom-domain binding.
+
+## Project references
 
 - [Domain language](./CONTEXT.md)
 - [Architecture](./docs/architecture.md)

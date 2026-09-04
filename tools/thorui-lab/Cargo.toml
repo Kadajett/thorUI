@@ -1,0 +1,59 @@
+[package]
+name = "thorui-lab"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+js-sys.workspace = true
+wasm-bindgen.workspace = true
+wasm-bindgen-futures.workspace = true
+web-sys = { version = "0.3.104", features = [
+  "Blob",
+  "BlobPropertyBag",
+  "BroadcastChannel",
+  "CssStyleDeclaration",
+  "Document",
+  "Element",
+  "Event",
+  "EventTarget",
+  "Gamepad",
+  "GamepadButton",
+  "HtmlAnchorElement",
+  "HtmlButtonElement",
+  "HtmlElement",
+  "HtmlSelectElement",
+  "KeyboardEvent",
+  "Location",
+  "MediaQueryList",
+  "MessageEvent",
+  "Navigator",
+  "Node",
+  "Performance",
+  "PointerEvent",
+  "Screen",
+  "ScreenOrientation",
+  "Url",
+  "VisibilityState",
+  "Window",
+] }
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+pedantic = { level = "deny", priority = -1 }
+cognitive_complexity = "deny"
+module_name_repetitions = "allow"
+must_use_candidate = "allow"

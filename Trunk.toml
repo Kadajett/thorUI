@@ -1,0 +1,12 @@
+[build]
+dist = "dist"
+filehash = true
+inject_scripts = true
+minify = "on_release"
+public_url = "/"
+release = false
+
+[serve]
+addresses = ["0.0.0.0"]
+port = 8080
+

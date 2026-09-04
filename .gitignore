@@ -1,0 +1,10 @@
+/dist/
+/node_modules/
+/target/
+/.trunk/
+/.wrangler/
+/playwright-report/
+/test-results/
+/.dev.vars*
+.env*
+!/reports/.gitkeep
